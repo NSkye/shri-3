@@ -3,10 +3,12 @@
 const DayModel = require('./day-model');
 const normalizeHours = require('../utils/normalize-hours');
 const Device = require('./device-model');
+const verifyInput = require('./verify-input');
 
 class ScheduleModel extends DayModel {
     constructor(inputs, dayStart, nightStart) {
         super(dayStart, nightStart);
+        verifyInput(inputs);
         this.maxPower = inputs.maxPower;
         this.devices = [];
         this._assignRatesAndPower(inputs.rates, this.maxPower);
@@ -23,7 +25,7 @@ class ScheduleModel extends DayModel {
                 ratesPlaced++;
             });
         });
-        if (ratesPlaced!=24) throw Error('INVALID INPUT: should be exactly one rate for every hour');
+        if (ratesPlaced!=24) throw Error('Incorrect input, should be exactly one rate per hour.');
     }
 
     addDevices(devices) {
