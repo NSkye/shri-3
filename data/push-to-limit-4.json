@@ -1,0 +1,112 @@
+{
+    "devices": [
+      {
+        "id": "p=3_d=13_m=ANY__0",
+        "name": "p=3_d=13_m=ANY__0",
+        "power": 3,
+        "duration": 13
+      },
+      {
+        "id": "p=2_d=5_m=ANY__1",
+        "name": "p=2_d=5_m=ANY__1",
+        "power": 2,
+        "duration": 5
+      },
+      {
+        "id": "p=1_d=20_m=ANY__2",
+        "name": "p=1_d=20_m=ANY__2",
+        "power": 1,
+        "duration": 20
+      },
+      {
+        "id": "p=1_d=10_m=ANY__3",
+        "name": "p=1_d=10_m=ANY__3",
+        "power": 1,
+        "duration": 10
+      },
+      {
+        "id": "p=1_d=16_m=ANY__4",
+        "name": "p=1_d=16_m=ANY__4",
+        "power": 1,
+        "duration": 16
+      },
+      {
+        "id": "p=2_d=10_m=ANY__5",
+        "name": "p=2_d=10_m=ANY__5",
+        "power": 2,
+        "duration": 10
+      },
+      {
+        "id": "p=1_d=10_m=ANY__6",
+        "name": "p=1_d=10_m=ANY__6",
+        "power": 1,
+        "duration": 10
+      },
+      {
+        "id": "p=1_d=3_m=ANY__7",
+        "name": "p=1_d=3_m=ANY__7",
+        "power": 1,
+        "duration": 3
+      },
+      {
+        "id": "p=1_d=2_m=ANY__8",
+        "name": "p=1_d=2_m=ANY__8",
+        "power": 1,
+        "duration": 2
+      },
+      {
+        "id": "p=1_d=1_m=ANY__9",
+        "name": "p=1_d=1_m=ANY__9",
+        "power": 1,
+        "duration": 1
+      },
+      {
+        "id": "p=1_d=1_m=ANY__10",
+        "name": "p=1_d=1_m=ANY__10",
+        "power": 1,
+        "duration": 1
+      },
+      {
+        "id": "p=2_d=2_m=ANY__11",
+        "name": "p=2_d=2_m=ANY__11",
+        "power": 2,
+        "duration": 2
+      },
+      {
+        "id": "p=1_d=2_m=ANY__12",
+        "name": "p=1_d=2_m=ANY__12",
+        "power": 1,
+        "duration": 2
+      },
+      {
+        "id": "p=5_d=1_m=ANY__13",
+        "name": "p=5_d=1_m=ANY__13",
+        "power": 5,
+        "duration": 1
+      },
+      {
+        "id": "p=1_d=1_m=ANY__14",
+        "name": "p=1_d=1_m=ANY__14",
+        "power": 1,
+        "duration": 1
+      }
+    ],
+    "rates": [
+      {
+        "from": 7,
+        "to": 10,
+        "value": 6.46
+      },
+      {
+        "from": 10,
+        "to": 17,
+        "value": 5.38
+      },
+      {
+        "from": 17,
+        "to": 7,
+        "value": 1.79
+      }
+    ],
+    "maxPower": 6
+}

@@ -1,0 +1,25 @@
+{
+  "name": "shri-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "jest": {
+    "testURL": "http://localhost:3000" 
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NSkye/shri-3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NSkye/shri-3/issues"
+  },
+  "homepage": "https://github.com/NSkye/shri-3#readme",
+  "devDependencies": {
+    "jest": "^23.4.2"
+  }
+}

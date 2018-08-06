@@ -1,0 +1,111 @@
+{
+    "devices": [
+        {
+            "id": "unit_1",
+            "name": "unit_1",
+            "power": 1050,
+            "duration": 1
+        },
+        {
+            "id": "unit_2",
+            "name": "unit_2",
+            "power": 525,
+            "duration": 2
+        },
+        {
+            "id": "unit_3",
+            "name": "unit_3",
+            "power": 1575,
+            "duration": 1
+        },
+        {
+            "id": "unit_4",
+            "name": "unit_4",
+            "power": 525,
+            "duration": 3
+        },
+        {
+            "id": "unit_5",
+            "name": "unit_5",
+            "power": 525,
+            "duration": 3
+        },
+        {
+            "id": "unit_6",
+            "name": "unit_6",
+            "power": 2100,
+            "duration": 1
+        },
+        {
+            "id": "unit_7",
+            "name": "unit_7",
+            "power": 1050,
+            "duration": 3
+        },
+        {
+            "id": "unit_8",
+            "name": "unit_8",
+            "power": 525,
+            "duration": 7
+        },
+        {
+            "id": "unit_9",
+            "name": "unit_9",
+            "power": 1050,
+            "duration": 4
+        },
+        {
+            "id": "unit_10",
+            "name": "unit_10",
+            "power": 525,
+            "duration": 9
+        },
+        {
+            "id": "unit_11",
+            "name": "unit_11",
+            "power": 1050,
+            "duration": 7
+        },
+        {
+            "id": "unit_12",
+            "name": "unit_12",
+            "power": 2100,
+            "duration": 4
+        },
+        {
+            "id": "unit_13",
+            "name": "unit_13",
+            "power": 525,
+            "duration": 19
+        }
+        
+    ],
+    "rates": [
+        {
+            "from": 7,
+            "to": 10,
+            "value": 6.46
+        },
+        {
+            "from": 10,
+            "to": 17,
+            "value": 5.38
+        },
+        {
+            "from": 17,
+            "to": 21,
+            "value": 6.46
+        },
+        {
+            "from": 21,
+            "to": 23,
+            "value": 5.38
+        },
+        {
+            "from": 23,
+            "to": 7,
+            "value": 1.79
+        }
+    ],
+    "maxPower": 2100
+}
