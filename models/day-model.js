@@ -17,7 +17,6 @@ class DayModel {
         this.dayStart = dayStart;
         this.nightStart = nightStart;
         this._addHours();
-        this.iterationCount = 0;
     }
     
     /**
@@ -28,7 +27,7 @@ class DayModel {
         let currentMode = dayStart > nightStart ? 'day' : 'night';
         this.hours = Array(24).fill(1).map((_, i) => {
             currentMode = i == dayStart ? 'day' : i == nightStart ? 'night' : currentMode;
-            return new Hour(i, currentMode);
+            return new Hour(i, currentMode, this);
         });
     }
 
@@ -89,7 +88,6 @@ class DayModel {
             let next = gen.next();
             if (next.done) break;
             if (cb(next.value, i)) break;
-            this.iterationCount++;
             i++;
         }
     }

@@ -2,7 +2,7 @@ const createSchedule = require('./index.js');
 
 describe('static testing', () => {
     test('original', () => {
-        expect(createSchedule(require('./data/original.json'))).toEqual({
+        expect(createSchedule(require('./data/original.json')).consumedEnergy).toEqual({
             value: 38.939,
             devices: {
                 '02DDD23A85DADDD71198305330CC386D': 5.398,
