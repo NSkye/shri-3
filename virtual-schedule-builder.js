@@ -36,12 +36,12 @@ class VirtualScheduleBuilder extends ScheduleModel {
             return this.deadlockState;
         }
         device.place(hourNumber);
-        this.floorCeil(hourNumber);
+        this.bestFit();
         if (!this.notPlacedDevices.length) {
             this.deadlockState = false;
             return this.deadlockState;
         }
-        this.bestFit();
+        this.floorCeil(hourNumber);
         if (!this.notPlacedDevices.length) {
             this.deadlockState = false;
             return this.deadlockState;
@@ -118,6 +118,8 @@ class VirtualScheduleBuilder extends ScheduleModel {
     }
 
     fillLevel(level) {
+        if (level === null) { return false; }
+        let filled = false;
         const devices = this.notPlacedDevices.filter(d => d.duration <= level.duration);
         let i = 0;
         while(i < devices.length) {
@@ -127,6 +129,7 @@ class VirtualScheduleBuilder extends ScheduleModel {
                 continue;
             }
             device.place(level.from);
+            filled = true;
             i++;
         }
         i = 0;
@@ -136,8 +139,10 @@ class VirtualScheduleBuilder extends ScheduleModel {
             const placement = normalizeHours(level.to - device.duration + 1);
             if (!device.checkBasicSafety(placement)) { i++; continue; }
             device.place(placement);
+            filled = true;
             i++;
         }
+        return filled;
     }
 
     normalizeLevel(level) {

@@ -41,6 +41,9 @@ class ScheduleBuilder extends ScheduleModel {
                 }
                 return;
             }
+            if (this.lastSafeBuild !== null) {
+                return this.lastSafeBuild.renderResults();
+            }
             throw Error('Impossible to place all devices.');
         });
         return this.renderResults();
