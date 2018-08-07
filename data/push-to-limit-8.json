@@ -1,0 +1,286 @@
+{
+    "devices": [
+      {
+        "id": "p=32_d=7_m=ANY__219",
+        "name": "p=32_d=7_m=ANY__219",
+        "power": 32,
+        "duration": 7
+      },
+      {
+        "id": "p=2_d=1_m=ANY__220",
+        "name": "p=2_d=1_m=ANY__220",
+        "power": 2,
+        "duration": 1
+      },
+      {
+        "id": "p=3_d=22_m=ANY__221",
+        "name": "p=3_d=22_m=ANY__221",
+        "power": 3,
+        "duration": 22
+      },
+      {
+        "id": "p=4_d=22_m=ANY__222",
+        "name": "p=4_d=22_m=ANY__222",
+        "power": 4,
+        "duration": 22
+      },
+      {
+        "id": "p=1_d=20_m=ANY__223",
+        "name": "p=1_d=20_m=ANY__223",
+        "power": 1,
+        "duration": 20
+      },
+      {
+        "id": "p=1_d=6_m=ANY__224",
+        "name": "p=1_d=6_m=ANY__224",
+        "power": 1,
+        "duration": 6
+      },
+      {
+        "id": "p=1_d=10_m=ANY__225",
+        "name": "p=1_d=10_m=ANY__225",
+        "power": 1,
+        "duration": 10
+      },
+      {
+        "id": "p=3_d=7_m=ANY__226",
+        "name": "p=3_d=7_m=ANY__226",
+        "power": 3,
+        "duration": 7
+      },
+      {
+        "id": "p=4_d=10_m=ANY__227",
+        "name": "p=4_d=10_m=ANY__227",
+        "power": 4,
+        "duration": 10
+      },
+      {
+        "id": "p=16_d=1_m=ANY__228",
+        "name": "p=16_d=1_m=ANY__228",
+        "power": 16,
+        "duration": 1
+      },
+      {
+        "id": "p=6_d=15_m=ANY__229",
+        "name": "p=6_d=15_m=ANY__229",
+        "power": 6,
+        "duration": 15
+      },
+      {
+        "id": "p=2_d=6_m=ANY__230",
+        "name": "p=2_d=6_m=ANY__230",
+        "power": 2,
+        "duration": 6
+      },
+      {
+        "id": "p=1_d=13_m=ANY__231",
+        "name": "p=1_d=13_m=ANY__231",
+        "power": 1,
+        "duration": 13
+      },
+      {
+        "id": "p=1_d=14_m=ANY__232",
+        "name": "p=1_d=14_m=ANY__232",
+        "power": 1,
+        "duration": 14
+      },
+      {
+        "id": "p=11_d=15_m=ANY__233",
+        "name": "p=11_d=15_m=ANY__233",
+        "power": 11,
+        "duration": 15
+      },
+      {
+        "id": "p=1_d=14_m=ANY__234",
+        "name": "p=1_d=14_m=ANY__234",
+        "power": 1,
+        "duration": 14
+      },
+      {
+        "id": "p=3_d=11_m=ANY__235",
+        "name": "p=3_d=11_m=ANY__235",
+        "power": 3,
+        "duration": 11
+      },
+      {
+        "id": "p=1_d=14_m=ANY__236",
+        "name": "p=1_d=14_m=ANY__236",
+        "power": 1,
+        "duration": 14
+      },
+      {
+        "id": "p=1_d=6_m=ANY__237",
+        "name": "p=1_d=6_m=ANY__237",
+        "power": 1,
+        "duration": 6
+      },
+      {
+        "id": "p=1_d=9_m=ANY__238",
+        "name": "p=1_d=9_m=ANY__238",
+        "power": 1,
+        "duration": 9
+      },
+      {
+        "id": "p=1_d=2_m=ANY__239",
+        "name": "p=1_d=2_m=ANY__239",
+        "power": 1,
+        "duration": 2
+      },
+      {
+        "id": "p=2_d=9_m=ANY__240",
+        "name": "p=2_d=9_m=ANY__240",
+        "power": 2,
+        "duration": 9
+      },
+      {
+        "id": "p=1_d=8_m=ANY__241",
+        "name": "p=1_d=8_m=ANY__241",
+        "power": 1,
+        "duration": 8
+      },
+      {
+        "id": "p=1_d=4_m=ANY__242",
+        "name": "p=1_d=4_m=ANY__242",
+        "power": 1,
+        "duration": 4
+      },
+      {
+        "id": "p=3_d=3_m=ANY__243",
+        "name": "p=3_d=3_m=ANY__243",
+        "power": 3,
+        "duration": 3
+      },
+      {
+        "id": "p=1_d=4_m=ANY__244",
+        "name": "p=1_d=4_m=ANY__244",
+        "power": 1,
+        "duration": 4
+      },
+      {
+        "id": "p=1_d=3_m=ANY__245",
+        "name": "p=1_d=3_m=ANY__245",
+        "power": 1,
+        "duration": 3
+      },
+      {
+        "id": "p=2_d=1_m=ANY__246",
+        "name": "p=2_d=1_m=ANY__246",
+        "power": 2,
+        "duration": 1
+      },
+      {
+        "id": "p=1_d=3_m=ANY__247",
+        "name": "p=1_d=3_m=ANY__247",
+        "power": 1,
+        "duration": 3
+      },
+      {
+        "id": "p=1_d=3_m=ANY__248",
+        "name": "p=1_d=3_m=ANY__248",
+        "power": 1,
+        "duration": 3
+      },
+      {
+        "id": "p=1_d=2_m=ANY__249",
+        "name": "p=1_d=2_m=ANY__249",
+        "power": 1,
+        "duration": 2
+      },
+      {
+        "id": "p=2_d=3_m=ANY__250",
+        "name": "p=2_d=3_m=ANY__250",
+        "power": 2,
+        "duration": 3
+      },
+      {
+        "id": "p=4_d=3_m=ANY__251",
+        "name": "p=4_d=3_m=ANY__251",
+        "power": 4,
+        "duration": 3
+      },
+      {
+        "id": "p=1_d=2_m=ANY__252",
+        "name": "p=1_d=2_m=ANY__252",
+        "power": 1,
+        "duration": 2
+      },
+      {
+        "id": "p=1_d=2_m=ANY__253",
+        "name": "p=1_d=2_m=ANY__253",
+        "power": 1,
+        "duration": 2
+      },
+      {
+        "id": "p=1_d=2_m=ANY__254",
+        "name": "p=1_d=2_m=ANY__254",
+        "power": 1,
+        "duration": 2
+      },
+      {
+        "id": "p=16_d=1_m=ANY__255",
+        "name": "p=16_d=1_m=ANY__255",
+        "power": 16,
+        "duration": 1
+      },
+      {
+        "id": "p=1_d=1_m=ANY__256",
+        "name": "p=1_d=1_m=ANY__256",
+        "power": 1,
+        "duration": 1
+      },
+      {
+        "id": "p=2_d=1_m=ANY__257",
+        "name": "p=2_d=1_m=ANY__257",
+        "power": 2,
+        "duration": 1
+      },
+      {
+        "id": "p=1_d=1_m=ANY__258",
+        "name": "p=1_d=1_m=ANY__258",
+        "power": 1,
+        "duration": 1
+      },
+      {
+        "id": "p=1_d=1_m=ANY__259",
+        "name": "p=1_d=1_m=ANY__259",
+        "power": 1,
+        "duration": 1
+      },
+      {
+        "id": "p=18_d=1_m=ANY__260",
+        "name": "p=18_d=1_m=ANY__260",
+        "power": 18,
+        "duration": 1
+      },
+      {
+        "id": "p=23_d=1_m=ANY__261",
+        "name": "p=23_d=1_m=ANY__261",
+        "power": 23,
+        "duration": 1
+      },
+      {
+        "id": "p=1_d=1_m=ANY__262",
+        "name": "p=1_d=1_m=ANY__262",
+        "power": 1,
+        "duration": 1
+      }
+    ],
+    "rates": [
+      {
+        "from": 7,
+        "to": 10,
+        "value": 6.46
+      },
+      {
+        "from": 10,
+        "to": 17,
+        "value": 5.38
+      },
+      {
+        "from": 17,
+        "to": 7,
+        "value": 1.79
+      }
+    ],
+    "maxPower": 42
+}

@@ -28,9 +28,14 @@ class ScheduleBuilder extends ScheduleModel {
             }
             return b.duration - a.duration;
         });
+        
 
-        this.devices.map(device => {
+        let i = 0;
+        let triedToStartFromEveryDevice = false;
+        while(i<this.devices.length) {
+            const device = this.devices[i];
             device.setHoursPriority();
+            let success = false;
             while (device.bestHours.length) {
                 const hour = device.bestHours.shift();
                 const isSafe = this.deadlockCheck(device, hour.number);
@@ -39,13 +44,19 @@ class ScheduleBuilder extends ScheduleModel {
                 if (typeof this.firstPlacedDevice !== 'number') {
                     this.firstPlacedDevice = hour.number;
                 }
-                return;
+                success = true;
+                break;
             }
+            if (success) { i++; continue; }
             if (this.lastSafeBuild !== null) {
                 return this.lastSafeBuild.renderResults();
             }
+            if (!triedToStartFromEveryDevice) {
+                i = i + 1 == this.devices.length ? (~(triedToStartFromEveryDevice = true) && 0) : i + 1;
+                continue;
+            }
             throw Error('Impossible to place all devices.');
-        });
+        }
         return this.renderResults();
     }
 

@@ -22,9 +22,13 @@ describe('static testing', () => {
         'push-to-limit-4.json',
         'push-to-limit-5.json',
         'push-to-limit-6.json',
+        'push-to-limit-7.json',
+        'push-to-limit-8.json',
+        'push-to-limit-9.json',
+        'push-to-limit-10.json',
     ].map(filename => {
         const path = './data/' + filename;
-
+        
         test(filename, () => {
             expect(() => createSchedule(require(path))).not.toThrowError();
         });
