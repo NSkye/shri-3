@@ -39,6 +39,7 @@ class Device {
             start: this.placed.start,
             end: this.placed.end
         }
+        cloneInstance.original = this;
         cloneInstance.bestHours = this.bestHours.slice(0);
         return cloneInstance;
     }
@@ -100,6 +101,16 @@ class Device {
                     return a.getCombinedPower(this.duration) - b.getCombinedPower(this.duration);
                 }
                 return a.getEfficency(this) - b.getEfficency(this)
+            });
+    }
+
+    setHoursPriorityNoRates() {
+        const environment = this.environment;
+        this.bestHoursNoRates = environment.hours
+            .slice(0)
+            .filter(h => this.checkBasicSafety(h.number))
+            .sort((a, b) => {
+                return a.getCombinedPower(this.duration) - b.getCombinedPower(this.duration);
             });
     }
 

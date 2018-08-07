@@ -1,4 +1,4 @@
-module.exports = new Map(
+const typeVerifiers = new Map(
     [ Array,
         v => Array.isArray(v)
     ],

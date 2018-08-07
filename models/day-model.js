@@ -91,6 +91,16 @@ class DayModel {
             i++;
         }
     }
+
+    offsetHours(newStartHour) {
+        if (newStartHour === 0) {
+            return this.hours.slice(0);
+        }
+        const firstPortion = this.hours.slice(newStartHour);
+        const secondPortion = this.hours.slice(0, newStartHour - 1);
+
+        return firstPortion.concat(secondPortion);
+    }
 }
 
 module.exports = DayModel;

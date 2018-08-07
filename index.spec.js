@@ -1,7 +1,9 @@
+'use strict';
+
 const createSchedule = require('./index.js');
 
 describe('static testing', () => {
-    test('original', () => {
+    test('original.json', () => {
         expect(createSchedule(require('./data/original.json')).consumedEnergy).toEqual({
             value: 38.939,
             devices: {
@@ -13,7 +15,18 @@ describe('static testing', () => {
             }
         });
     });
-    test('push to limit', () => {
-        expect(() => createSchedule(require('./data/push-to-limit-1.json'))).not.toThrowError();
+    const testData = [
+        'push-to-limit-1.json',
+        'push-to-limit-2.json',
+        'push-to-limit-3.json',
+        'push-to-limit-4.json',
+        'push-to-limit-5.json',
+        'push-to-limit-6.json',
+    ].map(filename => {
+        const path = './data/' + filename;
+
+        test(filename, () => {
+            expect(() => createSchedule(require(path))).not.toThrowError();
+        });
     });
 });
