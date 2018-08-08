@@ -1,27 +1,29 @@
 const typeVerifiers = new Map(
-    [ Array,
-        v => Array.isArray(v)
-    ],
-    [ Number,
-        v => (typeof v == 'number') && !isNaN(v) 
-    ],
-    [ String,
-        v => typeof v == 'string'
-    ],
-    [ Boolean,
-        v => typeof v == 'boolean'
-    ],
-    [ Symbol,
-        v => typeof v == 'symbol'
-    ],
-    [ Function,
-        v => typeof v == 'function'
-    ],
-    [ Object,
-        v => typeof v == 'object' && v !== null
-    ],
-    [ NaN,
-        v => isNaN(v)
+    [
+        [ Array,
+            v => Array.isArray(v)
+        ],
+        [ Number,
+            v => (typeof v == 'number') && !isNaN(v)
+        ],
+        [ String,
+            v => typeof v == 'string'
+        ],
+        [ Boolean,
+            v => typeof v == 'boolean'
+        ],
+        [ Symbol,
+            v => typeof v == 'symbol'
+        ],
+        [ Function,
+            v => typeof v == 'function'
+        ],
+        [ Object,
+            v => typeof v == 'object' && v !== null
+        ],
+        [ NaN,
+            v => isNaN(v)
+        ]
     ]
 );
 
@@ -32,7 +34,6 @@ function verify(value, typeOrFunc) {
         return typeOrFunc(value);
     }
     const verFunc = typeVerifiers.get(typeOrFunc);
-    console.log('func:', verFunc)
     return verFunc(value);
 }
 

@@ -1,0 +1,109 @@
+{
+  "devices": [
+    {
+      "id": "0-p2-d12",
+      "name": "0-p2-d12",
+      "power": 2,
+      "duration": 12
+    },
+    {
+      "id": "1-p2-d7",
+      "name": "1-p2-d7",
+      "power": 2,
+      "duration": 7
+    },
+    {
+      "id": "2-p1-d11",
+      "name": "2-p1-d11",
+      "power": 1,
+      "duration": 11
+    },
+    {
+      "id": "3-p1-d9",
+      "name": "3-p1-d9",
+      "power": 1,
+      "duration": 9
+    },
+    {
+      "id": "4-p1-d9",
+      "name": "4-p1-d9",
+      "power": 1,
+      "duration": 9
+    },
+    {
+      "id": "5-p1-d6",
+      "name": "5-p1-d6",
+      "power": 1,
+      "duration": 6
+    },
+    {
+      "id": "6-p1-d5",
+      "name": "6-p1-d5",
+      "power": 1,
+      "duration": 5
+    },
+    {
+      "id": "7-p2-d1",
+      "name": "7-p2-d1",
+      "power": 2,
+      "duration": 1
+    },
+    {
+      "id": "8-p2-d5",
+      "name": "8-p2-d5",
+      "power": 2,
+      "duration": 5
+    },
+    {
+      "id": "9-p2-d2",
+      "name": "9-p2-d2",
+      "power": 2,
+      "duration": 2
+    },
+    {
+      "id": "10-p1-d1",
+      "name": "10-p1-d1",
+      "power": 1,
+      "duration": 1
+    },
+    {
+      "id": "11-p1-d1",
+      "name": "11-p1-d1",
+      "power": 1,
+      "duration": 1
+    }
+  ],
+  "rates": [
+    {
+      "from": 6,
+      "to": 10,
+      "value": 9.4
+    },
+    {
+      "from": 10,
+      "to": 12,
+      "value": 1.06
+    },
+    {
+      "from": 12,
+      "to": 19,
+      "value": 3.11
+    },
+    {
+      "from": 19,
+      "to": 23,
+      "value": 9.52
+    },
+    {
+      "from": 23,
+      "to": 4,
+      "value": 4.52
+    },
+    {
+      "from": 4,
+      "to": 6,
+      "value": 1.27
+    }
+  ],
+  "maxPower": 4
+}

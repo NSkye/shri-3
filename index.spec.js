@@ -1,6 +1,8 @@
 'use strict';
 
 const createSchedule = require('./index.js');
+const generateInput = require('./testing-utils/input-generator');
+const fs = require('fs');
 
 describe('static testing', () => {
     test('original.json', () => {
@@ -28,9 +30,28 @@ describe('static testing', () => {
         'push-to-limit-10.json',
     ].map(filename => {
         const path = './data/' + filename;
-        
+        const input = require(path);
         test(filename, () => {
-            expect(() => createSchedule(require(path))).not.toThrowError();
+            let schedule;
+            expect(() => schedule = createSchedule(input)).not.toThrowError();
+            expect(input.devices.length).toBe(Object.keys(schedule.consumedEnergy.devices).length);
+        });
+    });
+});
+
+describe('monkey testing', () => {
+    const inputs = generateInput(100, 4, 0);
+    inputs.map(inputWrapper => {
+        const { name, input } = inputWrapper;
+        const log = JSON.stringify(input, null, 2);
+        test(name, () => {
+            try {
+                const schedule = createSchedule(input);
+                expect(input.devices.length).toBe(Object.keys(schedule.consumedEnergy.devices).length);
+            } catch(e) {
+                fs.appendFile(`./output/failed_tests/${name}.json`, log, e => {if (e) console.log(e.message)});
+                expect(e.message).toBe('no errors');
+            }
         });
     });
 });
