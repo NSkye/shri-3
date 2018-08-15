@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "jest": {
-    "testURL": "http://localhost:3000" 
+    "testURL": "http://localhost:3000"
   },
   "scripts": {
     "test": "jest"

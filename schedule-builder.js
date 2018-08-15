@@ -32,11 +32,13 @@ class ScheduleBuilder extends ScheduleModel {
 
         let i = 0;
         let triedToStartFromEveryDevice = false;
-        while(i<this.devices.length) {
+        while(this.notPlacedDevices.length) {
             const device = this.devices[i];
-            device.setHoursPriority();
+            if (!device.placed.is) {
+                device.setHoursPriority();
+            }
             let success = false;
-            while (device.bestHours.length) {
+            while (device.bestHours.length && !device.placed.is) {
                 const hour = device.bestHours.shift();
                 const isSafe = this.deadlockCheck(device, hour.number);
                 if (!isSafe) { continue; }
@@ -47,7 +49,10 @@ class ScheduleBuilder extends ScheduleModel {
                 success = true;
                 break;
             }
-            if (success) { i++; continue; }
+            if (success || device.placed.is) { 
+                i = i + 1 == this.devices.length ? 0 : i + 1;
+                continue; 
+            }
             if (this.lastSafeBuild !== null) {
                 return this.lastSafeBuild.renderResults();
             }
