@@ -39,63 +39,73 @@ class VirtualScheduleBuilder extends ScheduleModel {
             return this.deadlockState;
         }
         this.deadlockState = true;
-        /*console.log('VIRTUAL SCHEDULE:', this.renderResults());
-        console.log('NOT PLACED DEVICES:', this.notPlacedDevices.map(device => device.name));
-        console.log('REMAINING POWER: ');
-        this.hours.map(h => { console.log(`${h.number}: ${h.remainingPower}`)});
-        throw Error(' - ');*/
         return this.deadlockState;
     }
 
     floorCeilDayNight() {
-        this.floorCeilDayDevices();
-        this.floorCeilNightDevices();
-    }
-
-    floorCeilDayDevices() {
-        let devices = this.notPlacedDevices.filter(device => device.mode === 'day').sort(sortDevices.byDuration);
-        if (!devices.length) { return; }
-        let floor = this.dayStart;
-        let ceiling = normalizeHours(this.dayStart + devices[0].duration);
+        let day = this.createInitialLevel('day');
+        let night = this.createInitialLevel('night');
+        if (!night.devices.length && !day.devices.length) { return; }
 
         while(true) {
-            devices = devices.reduce((ac, device) => 
-                (this.placeOnFloor(device, floor) || this.placeOnCeiling(device, ceiling)) ? ac : ac.push(device) && ac, []
-            );
-            if (!devices.length) { break; }
-            floor = normalizeHours(ceiling + 1);
-            ceiling = null;
+            [ day.devices, night.devices ] = day.devices.concat(night.devices).reduce((ac, device) => {
+                if (device.mode === 'day') {
+                    (this.placeOnFloor(device, day.floor) || this.placeOnCeiling(device, day.ceiling)) || ac[0].push(device);
+                } else if (device.mode === 'night') {
+                    (this.placeOnCeiling(device, night.ceiling) || this.placeOnFloor(device, night.floor)) || ac[1].push(device);
+                }
+                return ac;
+            }, [ [], [] ])
+
+            day = this.createNextLevel(day);
+            night = this.createNextLevel(night);
+
+            if (!day.devices.length && !night.devices.length) { break; }
+        }
+    }
+
+    createNextLevel({ floor, ceiling, devices }) {
+        if (!devices.length) { return { devices: [] }; }
+        const mode = devices[0].mode;
+        floor = mode == 'day' ? normalizeHours(ceiling + 1) : null;
+        ceiling = mode == 'day' ? null : normalizeHours(floor - 1);
+        
+        switch (mode) {
+            case 'day':
             for (let i = 0; i < devices.length; i++) {
                 const device = devices[i];
                 if (!device.checkBasicSafety(floor)) { continue; }
                 ceiling = normalizeHours(floor + device.duration);
                 break;
             }
-            if (ceiling === null) { break; }
-        }
-    }
+            break;
 
-    floorCeilNightDevices() {
-        let devices = this.notPlacedDevices.filter(device => device.mode === 'night').sort(sortDevices.byDuration);
-        if (!devices.length) { return; }
-        let ceiling = normalizeHours(this.dayStart - 1);
-        let floor = normalizeHours(ceiling - devices[0].duration + 1);
-
-        while(true) {
-            devices = devices.reduce((ac, device) => 
-                (this.placeOnCeiling(device, ceiling) || this.placeOnFloor(device, floor)) ? ac : ac.push(device) && ac, []
-            );
-            if (!devices.length) { break; }
-            ceiling = normalizeHours(floor - 1);
-            floor = null;
+            case 'night':
             for (let i = 0; i < devices.length; i++) {
                 const device = devices[i];
                 if (!device.checkBasicSafety(ceiling - device.duration + 1)) { continue; }
                 floor = normalizeHours(ceiling - device.duration + 1);
                 break;
             }
-            if (floor === null) { break; }
+            break;
         }
+
+        return !(floor === null || ceiling === null) ? { floor, ceiling, devices } : { devices: [] };
+    }
+
+    createInitialLevel(mode) {
+        let devices = this.notPlacedDevices.filter(device => device.mode === mode);
+        if (!devices.length) { return { devices }; }
+        let floor, ceiling;
+        if (mode === 'day') {
+            floor = this.dayStart;
+            ceiling = normalizeHours(this.dayStart + devices[0].duration);
+        } else if (mode === 'night') {
+            ceiling = normalizeHours(this.dayStart - 1);
+            floor = normalizeHours(ceiling - devices[0].duration + 1);
+        } else { return { devices }; }
+
+        return { floor, ceiling, devices }
     }
 
     placeOnFloor(device, floor) {

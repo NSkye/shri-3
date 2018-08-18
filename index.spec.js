@@ -43,9 +43,9 @@ describe('static testing', () => {
 describe('monkey testing', () => {
     fsExtra.emptyDirSync('./output/failed_tests');
     const differentInputs = [
-        generateInput(100, 4, 0),
-        generateInput(100, 4, 0.5),
-        generateInput(100, 4, 1)
+        generateInput(33, 4, 0),
+        generateInput(33, 4, 0.5),
+        generateInput(33, 4, 1)
     ].map(inputs => {
         inputs.map(inputWrapper => {
             const { name, input, modeP } = inputWrapper;
