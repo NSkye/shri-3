@@ -11,6 +11,7 @@ function generateInputs(amount, maxPower, modeP) {
         const name = `${generateID()}-ds${devices.length}-mp${maxPower}`;
         generated.push({
             name,
+            modeP: modeP * 100,
             input: {
                 devices,
                 rates,

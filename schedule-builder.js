@@ -3,6 +3,7 @@
 const ScheduleModel = require('./models/schedule-model');
 const VirtualScheduleBuilder = require('./virtual-schedule-builder');
 const verifyInput = require('./verify-input');
+const sortDevices = require('./utils/sort-devices');
 
 class ScheduleBuilder extends ScheduleModel {
     constructor(inputs, dayStart, nightStart) {
@@ -13,23 +14,14 @@ class ScheduleBuilder extends ScheduleModel {
         this.notPlacedDevices = this.devices.slice(0);
         this.setHoursEfficency();
         this.lastSafeBuild = null;
+        this.firstFailedBuild = null;
+        this.lastFailedBuild = null;
     }
 
     placeDevices() {
-        // сортируем устройства по duration
-        this.devices = this.devices.sort((a, b) => {
-            if (a.mode && !b.mode) {
-                return -1;
-            } else if (b.mode && !a.mode) {
-                return 1;
-            }
-            if (b.duration == a.duration) {
-                return b.power - a.power;
-            }
-            return b.duration - a.duration;
-        });
-        
-
+        // сортируем устройства по приоритету
+        this.devices = this.devices.sort(sortDevices.byPriority);
+        this.deadlockCheck();
         let i = 0;
         let triedToStartFromEveryDevice = false;
         while(this.notPlacedDevices.length) {
@@ -59,7 +51,7 @@ class ScheduleBuilder extends ScheduleModel {
             if (!triedToStartFromEveryDevice) {
                 i = i + 1 == this.devices.length ? (~(triedToStartFromEveryDevice = true) && 0) : i + 1;
                 continue;
-            }
+            }  
             throw Error('Impossible to place all devices.');
         }
         return this.renderResults();
@@ -71,6 +63,9 @@ class ScheduleBuilder extends ScheduleModel {
         const isSafe = virtualBuilder.deadlockState === false;
         if (isSafe) {
             this.lastSafeBuild = virtualBuilder;
+        } else {
+            this.firstFailedBuild = this.firstFailedBuild === null ? this.firstFailedBuild = virtualBuilder : this.firstFailedBuild;
+            this.lastFailedBuild = virtualBuilder;
         }
         return isSafe;
     }

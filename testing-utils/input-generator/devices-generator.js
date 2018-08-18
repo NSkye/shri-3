@@ -45,7 +45,7 @@ function generateDevices7_21(maxPower, modeP) {
         while (h.remainingPower) {
             const maxPower = h.remainingPower;
             const mode = Math.random() < modeP ? h.mode : false;
-            const maxDuration = mode == 'day' ? 15 - i : 24 - i;
+            const maxDuration = mode == 'day' ? 14 - i : 24 - i;
 
             const device = generateDevice(maxPower, maxDuration, mode, generateID());
             simulateDevicePlacement(i, device.power, device.duration);

@@ -3,6 +3,7 @@
 const createSchedule = require('./index.js');
 const generateInput = require('./testing-utils/input-generator');
 const fs = require('fs');
+const fsExtra = require('fs-extra');
 
 describe('static testing', () => {
     test('original.json', () => {
@@ -40,18 +41,27 @@ describe('static testing', () => {
 });
 
 describe('monkey testing', () => {
-    const inputs = generateInput(100, 4, 0);
-    inputs.map(inputWrapper => {
-        const { name, input } = inputWrapper;
-        const log = JSON.stringify(input, null, 2);
-        test(name, () => {
-            try {
-                const schedule = createSchedule(input);
-                expect(input.devices.length).toBe(Object.keys(schedule.consumedEnergy.devices).length);
-            } catch(e) {
-                fs.appendFile(`./output/failed_tests/${name}.json`, log, e => {if (e) console.log(e.message)});
-                expect(e.message).toBe('no errors');
-            }
+    fsExtra.emptyDirSync('./output/failed_tests');
+    const differentInputs = [
+        generateInput(100, 4, 0),
+        generateInput(100, 4, 0.5),
+        generateInput(100, 4, 1)
+    ].map(inputs => {
+        inputs.map(inputWrapper => {
+            const { name, input, modeP } = inputWrapper;
+            const log = JSON.stringify(input, null, 2);
+            test(name, () => {
+                try {
+                    const schedule = createSchedule(input);
+                    expect(input.devices.length).toBe(Object.keys(schedule.consumedEnergy.devices).length);
+                } catch(e) {
+                    Promise.resolve()
+                    .then(() => fsExtra.emptyDir(`./output/failed_tests/mp${modeP}`))
+                    .then(() => fs.appendFile(`./output/failed_tests/mp${modeP}/${name}.json`, log, e => { if (e) { console.log(e.message) } }))
+                    .catch(e => console.log(e.message));
+                    expect(e.message).toBe('no errors');
+                }
+            });
         });
     });
 });
