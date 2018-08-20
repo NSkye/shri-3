@@ -33,40 +33,60 @@ class ScheduleBuilder extends ScheduleModel {
      */
     placeDevices() {
         this.devices = this.devices.sort(sortDevices.byPriority); // Сортировка устройств по приоритету
+        let devices = this.devices.slice(0);
         this.deadlockCheck(); // Первая проверка на наличие тупиковых состояний, чтоб иметь дополнительный фоллбэк в lastSafeBuild
+        
         let i = 0;
         let triedToStartFromEveryDevice = false;
+        let triedPowerBias = false;
         while(this.notPlacedDevices.length) {
-            const device = this.devices[i];
-            if (!device.placed.is) {
-                device.setHoursPriority();
-            }
-            let success = false;
-            while (device.bestHours.length && !device.placed.is) {
-                const hour = device.bestHours.shift();
-                const isSafe = this.deadlockCheck(device, hour.number);
-                if (!isSafe) { continue; }
-                device.place(hour.number);
-                if (typeof this.firstPlacedDevice !== 'number') {
-                    this.firstPlacedDevice = hour.number;
-                }
-                success = true;
-                break;
-            }
-            if (success || device.placed.is) { 
-                i = i + 1 == this.devices.length ? 0 : i + 1;
+            const device = devices[i];
+            let success = this.tryToPlaceDevice(device);
+            if (success) {
+                i = i + 1 == devices.length ? 
+                0 : 
+                i + 1 ;
                 continue; 
             }
-            if (this.lastSafeBuild !== null) {
+            if (this.lastSafeBuild !== null) { 
                 return this.lastSafeBuild.renderResults();
             }
-            if (!triedToStartFromEveryDevice) {
-                i = i + 1 == this.devices.length ? (~(triedToStartFromEveryDevice = true) && 0) : i + 1;
+            if (!triedPowerBias) {
+                devices = devices.sort(sortDevices.byPriorityPowerBias);
+                i = 0;
+                triedPowerBias = true;
                 continue;
-            }  
+            }
+            if (!triedToStartFromEveryDevice) {
+                i = i + 1 == devices.length ?
+                ~(triedToStartFromEveryDevice = true) && 0 :
+                i + 1 ;
+                continue;
+            }
             throw Error('Impossible to place all devices.');
         }
         return this.renderResults();
+    }
+
+    /**
+     * Предпринимает попытку размещения устройства и возвращает факт успеха
+     * @param {Object} device объект устройства
+     * @returns {Boolean}
+     */
+    tryToPlaceDevice(device) {
+        if (device.placed.is) { return true; }
+        device.setHoursPriority();
+        while (device.bestHours.length && !device.placed.is) {
+            const hour = device.bestHours.shift();
+            const isSafe = this.deadlockCheck(device, hour.number);
+            if (!isSafe) { continue; }
+            device.place(hour.number);
+            if (typeof this.firstPlacedDevice !== 'number') {
+                this.firstPlacedDevice = hour.number;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
