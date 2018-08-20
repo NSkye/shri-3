@@ -3,6 +3,13 @@
 const verifyObject = require('./verify-object');
 const { one, all } = verifyObject;
 
+/**
+ * Проверяет корректность объекта ввода с сигнатурой указанной в задании.  
+ * Учитывает наличие необходимых данных и их корректность.  
+ * Не учитывает конфликтующие или недостающие тарифы. Это проверяется уже внутри ScheduleModel.  
+ * При некорректных данных сразу выбрасывает ошибку.
+ * @param {Object} input входной объект
+ */
 function verifyInput(input) {
     
     let checkInput = verifyObject(input, {

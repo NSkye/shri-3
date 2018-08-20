@@ -1,5 +1,10 @@
 const { verify, one, all } = require('./type-verifiers')
 
+/**
+ * Поверхностно сравнивает объект с дескриптором и указывает соответствует ли он ему
+ * @param {Object} object проверяемый объект
+ * @param {Object} descriptor объект-дескриптор
+ */
 function verifyObject(object, descriptor) {
     if (typeof object !== 'object' 
     || typeof descriptor !== 'object'

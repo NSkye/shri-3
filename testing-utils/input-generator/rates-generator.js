@@ -1,6 +1,9 @@
 const generateOffsettedHours = require('./offsetted-hours-generator');
 const rand = require('../rand');
 
+/**
+ * Генерирует случайный, но корректный массив тарифов
+ */
 function generateRates() {
     const rates = [];
     let from, to;

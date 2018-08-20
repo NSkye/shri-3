@@ -2,6 +2,14 @@ const generateOffsettedHours = require('./offsetted-hours-generator');
 const rand = require('../rand');
 const createIDGenerator = require('../id-generator');
 
+/**
+ * Генерирует случайное устройство
+ * @param {Number} maxPower максимальная мощность
+ * @param {Number} maxDuration максимальная продолжительность работы
+ * @param {String} mode режим (day/night)
+ * @param {Number} id присваевамый уникальный номер
+ * @returns {Object}
+ */
 function generateDevice(maxPower, maxDuration, mode, id) {
     const modeId = mode ? mode[0] : '';
     const power = rand(1, maxPower);
@@ -16,7 +24,14 @@ function generateDevice(maxPower, maxDuration, mode, id) {
     mode ? device.mode = mode : null;
     return device;
 }
-
+/**
+ * Генерирует случайный, но корректный массив устройств такой, что:  
+ * 1. Все устройства из него в теории всегда могут быть размещены
+ * 2. При размещении всех устройств потребление энергии на каждом часу будет равняться максимальному значению
+ * @param {Number} maxPower максимальная мощность
+ * @param {Number} modeP вероятность появления в выборке устройств, зависимых от времени суток (0-1)
+ * @returns {Array}
+ */
 function generateDevices7_21(maxPower, modeP) {
     const dayStart = 7; nightStart = 21;
     const generateID = createIDGenerator();

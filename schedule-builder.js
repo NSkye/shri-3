@@ -5,23 +5,35 @@ const VirtualScheduleBuilder = require('./virtual-schedule-builder');
 const verifyInput = require('./verify-input');
 const sortDevices = require('./utils/sort-devices');
 
+/**
+ * Содержит основную логику для размещения устройств
+ */
 class ScheduleBuilder extends ScheduleModel {
+    /**
+     * Конструктор
+     * @param {Object} inputs исходные данные
+     * @param {Number} dayStart время начала дня
+     * @param {Number} nightStart время начала ночи
+     */
     constructor(inputs, dayStart, nightStart) {
-        verifyInput(inputs);
-        super(inputs, dayStart, nightStart);
-        this._assignRatesAndPower(inputs.rates, this.maxPower);
-        this.addDevices(inputs.devices);
-        this.notPlacedDevices = this.devices.slice(0);
-        this.setHoursEfficency();
-        this.lastSafeBuild = null;
-        this.firstFailedBuild = null;
-        this.lastFailedBuild = null;
+        verifyInput(inputs); // верификация ввода
+        super(inputs, dayStart, nightStart); // вызов конструктора ScheduleModel
+        this._assignRatesAndPower(inputs.rates, this.maxPower); // добавление тарифов и оставшейся энергии часам
+        this.addDevices(inputs.devices); // конвертация устройств
+        this.notPlacedDevices = this.devices.slice(0); // массив неразмещенных устройств
+        this.setHoursEfficency(); // определение стоимости размещения каждого устройства для каждого часа
+        this.lastSafeBuild = null; // последний успешный VirtualSchedule
+        this.firstFailedBuild = null; // первый проваленный VirtualSchedule (для отладки)
+        this.lastFailedBuild = null; // последний проваленный VirtualSchedule (для отладки)
     }
 
+    /**
+     * Размещает устройства и возвращает объект с сигнатурой, указанной в задании
+     * @returns {Object}
+     */
     placeDevices() {
-        // сортируем устройства по приоритету
-        this.devices = this.devices.sort(sortDevices.byPriority);
-        this.deadlockCheck();
+        this.devices = this.devices.sort(sortDevices.byPriority); // Сортировка устройств по приоритету
+        this.deadlockCheck(); // Первая проверка на наличие тупиковых состояний, чтоб иметь дополнительный фоллбэк в lastSafeBuild
         let i = 0;
         let triedToStartFromEveryDevice = false;
         while(this.notPlacedDevices.length) {
@@ -57,6 +69,11 @@ class ScheduleBuilder extends ScheduleModel {
         return this.renderResults();
     }
 
+    /**
+     * Проверка на наличие тупиковых состояний путем создания виртуального расписания и размещения в нем устройств
+     * @param {[Object]} device устройство, которое мы собираемся разместить
+     * @param {[Number]} hourNumber час, на котором мы его собираемся разместить
+     */
     deadlockCheck(device, hourNumber) {
         const virtualBuilder = new VirtualScheduleBuilder(this);
         virtualBuilder.placeDevices(device, hourNumber);

@@ -27,6 +27,12 @@ const typeVerifiers = new Map(
     ]
 );
 
+/**
+ * Производит верификацию значения по указанному сценарию, либо с помощью кастомной функции
+ * @param {*} value проверяемое значение
+ * @param {*} typeOrFunc ключ для верификации либо кастомная функция. Возможные значения: undefined, null, Number, String, Boolean, Symbol, Function, Object, NaN, [callback]
+ * @returns {Boolean}
+ */
 function verify(value, typeOrFunc) {
     if (typeof typeOrFunc === 'undefined') { return typeof value === 'undefined'; }
     if (typeOrFunc === null) { return value === null; }
@@ -37,12 +43,22 @@ function verify(value, typeOrFunc) {
     return verFunc(value);
 }
 
+/**
+ * Имплементация логического ИЛИ для функции верификации
+ * @param {*} a ключи или функции  
+ * @returns {Boolean}
+ */
 function one(...a) {
     return function(value) {
         return [...a].some(arg => verify(value, arg));
     }
 }
 
+/**
+ * Имплементация логического И для функции верификации
+ * @param {*} a клюи или функции  
+ * @returns {Boolean}
+ */
 function all(...a) {
     return function(value) {
         return [...a].every(arg => verify(value, arg));

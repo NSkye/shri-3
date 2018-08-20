@@ -3,7 +3,15 @@
 const normalizeHours = require('../utils/normalize-hours');
 const sortDevices = require('../utils/sort-devices');
 
+/**
+ * Класс устройства, содержит атрибуты и методы для более удобного менеджмента устройств
+ */
 class Device {
+    /**
+     * Конструктор
+     * @param {Object} deviceData данные устройства
+     * @param {Object} environment окружение, в котором оно будет располагаться (инстанс ScheduleBuilder или VirtualScheduleBuilder)
+     */
     constructor(deviceData, environment) {
         this.environment = environment;
 
@@ -24,6 +32,10 @@ class Device {
         this.cloned = false;
     }
 
+    /**
+     * Создает копию устройства
+     * @param {Object} environment новое окружение (ScheduleBuilder либо VirtualScheduleBuilder)
+     */
     clone(environment) {
         const cloneInstance = new Device({
             id: this.id,
@@ -45,6 +57,10 @@ class Device {
         return cloneInstance;
     }
 
+    /**
+     * Проверяет возможность размещения устройства на заданном часу
+     * @param {Number} hourNumber номер часа
+     */
     checkBasicSafety(hourNumber) {
         const environment = this.environment;
         let isSafe = true;
@@ -62,6 +78,10 @@ class Device {
         return isSafe;
     }
     
+    /**
+     * Размещает устройство на заданном часу
+     * @param {Number} hourNumber номер часа
+     */
     place(hourNumber) {
         const environment = this.environment;
         if (this.placed.is) { throw Error('Device is already placed.') }
@@ -77,6 +97,10 @@ class Device {
         environment.notPlacedDevices.splice(myIndex, 1);
     }
 
+    /**
+     * Убирает устройство с часа, на котором оно расположено
+     * @param {Boolean} recentlyPlaced если устройство было размещено только что, не будет производиться сортировка массива неразмещенных устройств
+     */
     remove(recentlyPlaced = true) {
         const environment = this.environment;
         if (!this.placed.is) { throw Error('Can not remove device, it was not placed yet.') }
@@ -95,6 +119,10 @@ class Device {
         }
     }
 
+    /**
+     * Определяет на каких часах может быть расположено устройство.  
+     * Сортирует эти часы по возрастанию стоимости размещения устройства на них.
+     */
     setHoursPriority() {
         const environment = this.environment;
         this.bestHours = environment.hours
@@ -108,6 +136,10 @@ class Device {
             });
     }
 
+    /**
+     * Определяет на каких часах может быть расположено устройство.  
+     * Сортирует эти часы по возрастанию оставшейся энергии.
+     */
     setHoursPriorityNoRates() {
         const environment = this.environment;
         this.bestHoursNoRates = environment.hours
@@ -118,30 +150,12 @@ class Device {
             });
     }
 
+    /**
+     * Проверяет размещено ли устройство
+     * @returns {Boolean}
+     */
     get isPlaced() {
         return this.placed.is;
-    }
-
-    get info() {
-        const { id, name, power, duration } = this;
-        const info = { id, name, power, duration };
-        if (this.mode) {
-            info.mode = this.mode;
-        }
-        return info;
-    }
-
-    get extendedInfo() {
-        const info = this.info;
-        info.placed = {
-            is: this.placed.is,
-            start: this.placed.start,
-            end: this.placed.end
-        }
-        info.bestHours = this.bestHours.map(h => h.number);
-        info.cloned = this.cloned;
-
-        return info;
     }
 }
 
