@@ -3,7 +3,7 @@
 const createSchedule = require('./index.js');
 const generateInput = require('./testing-utils/input-generator');
 const fs = require('fs');
-const fse = require('fs-extra');
+const fsExtra = require('fs-extra');
 
 describe('static testing', () => {
 
@@ -61,7 +61,7 @@ describe('static testing', () => {
 });
 
 describe('monkey testing', () => {
-    fse.emptyDirSync('./output/failed_tests');
+    fsExtra.emptyDirSync('./output/failed_tests');
     const differentInputs = [
         generateInput(33, 4, 0),
         generateInput(33, 4, 0.5),
@@ -78,7 +78,7 @@ describe('monkey testing', () => {
                 } catch(e) {
                     // если не удалось разместить устройства в выборке, то сохраним её
                     Promise.resolve()
-                    .then(() => fse.ensureDir(`./output/failed_tests/mp${modeP}`))
+                    .then(() => fsExtra.ensureDir(`./output/failed_tests/mp${modeP}`))
                     .then(() => fs.appendFile(`./output/failed_tests/mp${modeP}/${name}.json`, log, e => { if (e) { console.log(e.message) } }))
                     .catch(e => console.log(e.message));
                     // если и была ошибка, то она должна быть связана с невозможностью разместить устройства
