@@ -113,7 +113,8 @@ class VirtualScheduleBuilder extends ScheduleModel {
             return false;
         }
         device.place(floor);
-        return true;
+        
+        return this.floorCeilSafetyMeasures(device, floor);
     }
 
     placeOnCeiling(device, ceiling) {
@@ -122,7 +123,23 @@ class VirtualScheduleBuilder extends ScheduleModel {
             return false;
         }
         device.place(hour);
-        return true; 
+
+        return this.floorCeilSafetyMeasures(device, hour); 
+    }
+
+    floorCeilSafetyMeasures(placedDevice, placedHourNumber) {
+        const device = this.notPlacedDevices.filter(device => !device.mode)[0];
+        if (!device) { return true; }
+        device.setHoursPriorityNoRates();
+        if (device.bestHoursNoRates.length) { return true; }
+        placedDevice.remove();
+        device.setHoursPriorityNoRates();
+        if (device.bestHoursNoRates.length) {
+            device.place(device.bestHoursNoRates[0].number);
+            return false;
+        }
+        placedDevice.place(placedHourNumber);
+        return true;
     }
 
     bestFit() {

@@ -1,6 +1,7 @@
 'use strict';
 
 const normalizeHours = require('../utils/normalize-hours');
+const sortDevices = require('../utils/sort-devices');
 
 class Device {
     constructor(deviceData, environment) {
@@ -76,7 +77,7 @@ class Device {
         environment.notPlacedDevices.splice(myIndex, 1);
     }
 
-    remove() {
+    remove(recentlyPlaced = true) {
         const environment = this.environment;
         if (!this.placed.is) { throw Error('Can not remove device, it was not placed yet.') }
         environment.iterateHours({ from: this.placed.start, to: this.placed.end }, h => {
@@ -88,7 +89,10 @@ class Device {
         this.placed.start = null;
         this.placed.end = null;
 
-        environment.notPlacedDevices.push(this);
+        environment.notPlacedDevices.unshift(this);
+        if (!recentlyPlaced) {
+            environment.notPlacedDevices = environment.notPlacedDevices.sort(sortDevices.byPriority);
+        }
     }
 
     setHoursPriority() {
