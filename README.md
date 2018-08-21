@@ -239,7 +239,10 @@ describe('monkey testing', () => {
 [Модели](#models)  
 [Основная логика](#core)
 ### <a name='models'></a>Модели
-
+[Device](#device)  
+[Hour](#hour)  
+[DayModel](#daymodel)  
+[ScheduleModel](#schedulemodel)  
 #### Device `./models/device-model.js`
 Класс устройства, содержит атрибуты и методы для манипулирования устройствами в расписании.
 ##### Конструктор
