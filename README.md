@@ -447,8 +447,8 @@ firstFailedBuild, lastFailedBuild -- первый и последние инст
 Алгоритм:  
 1. Если устройство уже размещено, то **возвращаем true**.  
 2. [Приоретизируем часы для устройства](#device).  
-3. Итерируем через возможные часы пока они не кончатся или пока не будут размещены устройства:
-3.1) Проверяем на наличие тупикового состояния при размещениии устройства на данном часу.  
+3. Итерируем через возможные часы пока они не кончатся или пока не будут размещены устройства:  
+3.1) [Проверяем на наличие тупикового состояния](#deadlockcheck) при размещениии устройства на данном часу.  
 3.2) Если присутствует тупиковое состояние, то **переходим к следующему часу**.  
 3.2) Если тупикового состояния не появилось, значит размещаем устройства и **возвращаем true**.
 4. Если мы так и не разместили устройство, проитерировав через все возможные часы, то **возвращаем false**.  
@@ -482,3 +482,43 @@ tryToPlaceDevice(device) {
     return false;
 }
 ```
+##### <a name='#deadlockcheck'></a>`deadlockCheck(device, hourNumber)`
+Проверяет на наличие тупикового состояния в случае размещения устройства на данном часу.  
+- device -- объект-инстанс класса Device
+- hourNumber -- номер часа, на котором собираемся произвести размещение  
+Алгоритм:  
+1. Создаем новый инстанс [VirtualScheduleBuilder](#virtualschedulebuilder), передав в его конструктор текущее окружение (this)
+2. Пробуем разместить устройства внутри VirtualScheduleBuilder и узнаем о наличии или отсутствии тупикового состояния.
+3. Сохраняем инстанс в lastSafeBuild/lastFailedBuild/firstFailedBuild в зависимости от результата
+4. Возвращаем результат  
+
+В коде:  
+`./schedule-builder:92`
+```javascript
+/**
+ * Проверка на наличие тупиковых состояний путем создания виртуального расписания и размещения в нем устройств
+ * @param {[Object]} device устройство, которое мы собираемся разместить
+ * @param {[Number]} hourNumber час, на котором мы его собираемся разместить
+ */
+deadlockCheck(device, hourNumber) {
+    // Создаем новый инстанс VirtualScheduleBuilder, передав в его конструктор текущее окружение (this)
+    const virtualBuilder = new VirtualScheduleBuilder(this);
+    // Пробуем разместить устройства внутри VirtualScheduleBuilder
+    virtualBuilder.placeDevices(device, hourNumber);
+    // Проверяем на наличие тупикового состояния
+    const isSafe = virtualBuilder.deadlockState === false;
+    // Если нет тупикового состояния
+    if (isSafe) {
+        // Сохраняем lastSafeBuild
+        this.lastSafeBuild = virtualBuilder;
+    // если есть
+    } else {
+        // Сохраняем lastFailedBuild и опционально firstFailedBuild
+        this.firstFailedBuild = this.firstFailedBuild === null ? this.firstFailedBuild = virtualBuilder : this.firstFailedBuild;
+        this.lastFailedBuild = virtualBuilder;
+    }
+    // Возвращаем результат
+    return isSafe;
+}
+```
+
