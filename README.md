@@ -326,9 +326,9 @@ dayModelInstance.iterateHours({ from: 23, times: 3 }, h => console.log(h.number)
 ```
 new ScheduleModel(inputs, dayStart, nightStart);
 ```
-- inputs -- исходные данные, в соответствии с сигнатурой указанной в задании
-- dayStart -- время начала дня
-- nightStart -- время начала ночи
+- inputs -- исходные данные, в соответствии с сигнатурой указанной в задании  
+- dayStart -- время начала дня  
+- nightStart -- время начала ночи  
 ##### `.maxPower`
 Максимальная мощность, заданная во входных данных.
 ##### `.devices`
@@ -344,16 +344,16 @@ new ScheduleModel(inputs, dayStart, nightStart);
 ##### `renderResults()`
 Формирует и возвращает объект расписания, оформленный в соответствии с сигнатурой указанной в задании. 
 ### <a name='core'></a>Модули с основной логикой
-Тут всё будет сильно подробнее.
+Тут всё будет сильно подробнее.  
 [ScheduleBuilder](#schedulebuilder)  
-[VirtualScheduleBuilder](#virualschedulebuilder)
-[Приоретизация устройств](#devicesorting)
+[VirtualScheduleBuilder](#virualschedulebuilder)  
+[Приоретизация устройств](#devicesorting)  
 #### <a name='schedulebuilder'></a>ScheduleBuilder `./schedule-builder.js`
-[Конструктор](#schedulebuilderconstructor)
-[.lastSafeBuild, .firstFailedBuild, .lastFailedBuild](#builds)
-[placeDevices()](#schedulebuilderplacedevices)
-[tryToPlaceDevice()](#trytoplacedevice)
-[deadlockCheck()](#deadlockcheck)
+[Конструктор](#schedulebuilderconstructor)  
+[.lastSafeBuild, .firstFailedBuild, .lastFailedBuild](#builds)  
+[placeDevices()](#schedulebuilderplacedevices)  
+[tryToPlaceDevice()](#trytoplacedevice)  
+[deadlockCheck()](#deadlockcheck)  
 ##### <a name='schedulebuilderconstructor'></a>Конструктор
 ```javascript
 new ScheduleBuilder(input, dayStart, nightStart);
@@ -367,7 +367,20 @@ new ScheduleBuilder(input, dayStart, nightStart);
 lastSafeBuild -- последний инстанс [VirtualScheduleBuilder](#virtualschedulebuilder), в котором удалось разместить все устройства  
 firstFailedBuild, lastFailedBuild -- первый и последние инстансы [VirtualScheduleBuilder](#virtualschedulebuilder), в которых не получилось разместить все устройства, требуются только для отладки  
 ##### <a name='schedulebuilderplacedevices'></a>`placeDevices()`
-Основная логика для размещения устройств. Разбор кода с объяснениями:  
+Основная логика для размещения устройств.  
+Подробный алгоритм:
+1) [Сортируем устройства по приоритету](#devicesorting).  
+2) Итерируем через все устройства пока у нас есть неразмещенные:  
+2.1) [Пробуем разместить устройство](#trytoplacedevice).  
+2.2) Если получилось, то **переходим к следующему**.  
+2.2) Если не получилось, то проверяем получалось ли у нас разместить какое-то устройство на одной из прошлых итераций.  
+2.2.1) Если получалось, то рендерим результаты из последнего успешного инстанса [VirtualScheduleBuilder](#virtualschedulebuilder), где удалось разместить устройства.  
+2.3) Проверяем пробовали ли мы [альтернативную сортировку](#devicesorting).  
+2.3.1) Если ещё не пробовали, то применяем альтернативную сортировку и начинаем цикл заново.  
+2.4) Проверяем попробовали ли мы уже начать с каждого устройства.  
+2.4.1) Если пробовали, значит выбрасываем ошибку.  
+3) Рендерим результаты и возвращаем их.  
+В коде:    
 `./schedule-builder.js:30`
 ```javascript
 /**
@@ -375,14 +388,17 @@ firstFailedBuild, lastFailedBuild -- первый и последние инст
      * @returns {Object}
      */
     placeDevices() {
-        this.devices = this.devices.sort(sortDevices.byPriority); // Сортировка устройств по приоритету
-        let devices = this.devices.slice(0); // Копируем себе устройства, так как возможно их порядок придется изменить и мы не хотим мутировать основной массив
-        this.deadlockCheck(); // Первая проверка на наличие тупиковых состояний, чтоб иметь дополнительный фоллбэк в lastSafeBuild
+        // Сортировка устройств по приоритету
+        this.devices = this.devices.sort(sortDevices.byPriority); 
+        // Копируем себе устройства, так как возможно их порядок придется изменить и мы не хотим мутировать основной массив
+        let devices = this.devices.slice(0); 
+        // Первая проверка на наличие тупиковых состояний, чтоб иметь дополнительный фоллбэк в lastSafeBuild
+        this.deadlockCheck(); 
         
         let i = 0;
         let triedToStartFromEveryDevice = false;
         let triedPowerBias = false;
-        // итерируем через все устройства
+        // итерируем через все устройства пока у нас есть неразмещенные
         while(this.notPlacedDevices.length) {
             const device = devices[i];
             // пробуем разместить устройство
@@ -419,7 +435,7 @@ firstFailedBuild, lastFailedBuild -- первый и последние инст
             // если мы пробовали начать с каждого устройства и это не дало результатов, значит скорее всего устройства нельзя разместить, выбрасываем ошибку
             throw Error('Impossible to place all devices.');
         }
-        // если ошибок не было и мы успешно прошли до конца цикла, значит выводим результаты
+        // если ошибок не было и мы успешно прошли до конца цикла (не осталось неразмещенных устройств), значит выводим результаты
         return this.renderResults();
     }
 ```
