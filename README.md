@@ -236,7 +236,7 @@ describe('monkey testing', () => {
 });
 ```
 ## <a name='wouldyouliketoknowmore'></a> Подробное описание основных модулей
-[Модели](#models)
+[Модели](#models)  
 [Основная логика](#core)
 ### <a name='models'></a>Модели
 
