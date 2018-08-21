@@ -442,8 +442,9 @@ firstFailedBuild, lastFailedBuild -- первый и последние инст
     }
 ```
 
-##### <a name='#trytoplacedevice'></a>`placeDevices()`
+##### <a name='#trytoplacedevice'></a>`tryToPlaceDevice(device)`
 Предпринять попытку размещения устройства.  
+- device -- объект-инстанс класса Device
 Алгоритм:  
 1. Если устройство уже размещено, то **возвращаем true**.  
 2. [Приоретизируем часы для устройства](#device).  
