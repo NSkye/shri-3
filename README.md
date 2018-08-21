@@ -344,3 +344,82 @@ new ScheduleModel(inputs, dayStart, nightStart);
 ##### `renderResults()`
 Формирует и возвращает объект расписания, оформленный в соответствии с сигнатурой указанной в задании. 
 ### <a name='core'></a>Модули с основной логикой
+Тут всё будет сильно подробнее.
+[ScheduleBuilder](#schedulebuilder)  
+[VirtualScheduleBuilder](#virualschedulebuilder)
+[Приоретизация устройств](#devicesorting)
+#### <a name='schedulebuilder'></a>ScheduleBuilder `./schedule-builder.js`
+[Конструктор](#schedulebuilderconstructor)
+[.lastSafeBuild, .firstFailedBuild, .lastFailedBuild](#builds)
+[placeDevices()](#schedulebuilderplacedevices)
+[tryToPlaceDevice()](#trytoplacedevice)
+[deadlockCheck()](#deadlockcheck)
+##### <a name='schedulebuilderconstructor'></a>Конструктор
+```javascript
+new ScheduleBuilder(input, dayStart, nightStart);
+```
+- inputs -- входные данные в соответствии с сигнатурой, указанной в задании
+- dayStart -- час в который начинается день
+- nightStart -- час, в который начинается ночь
+При вызове конструктор в первую очередь [проверяет правильность входных данных](#verification), затем вызывает методы `_assignRatesAndPower`, `addDevices` и `setHoursEfficency`, унаследованные от [ScheduleModel](#schedulemodel). После этого создает массив неразмещенных устройств `.notPlacedDevices`. Таким образом, мы готовы к составлению расписания.
+##### <a name='builds'></a>`.lastSafeBuild`, `.firstFailedBuild`, `.lastFailedBuild`
+Инстансы [VirtualScheduleBuilder](#virtualschedulebuilder).  
+lastSafeBuild -- последний инстанс [VirtualScheduleBuilder](#virtualschedulebuilder), в котором удалось разместить все устройства  
+firstFailedBuild, lastFailedBuild -- первый и последние инстансы [VirtualScheduleBuilder](#virtualschedulebuilder), в которых не получилось разместить все устройства, требуются только для отладки  
+##### <a name='schedulebuilderplacedevices'></a>`placeDevices()`
+Основная логика для размещения устройств. Разбор кода с объяснениями:  
+`./schedule-builder.js:30`
+```javascript
+/**
+     * Размещает устройства и возвращает объект с сигнатурой, указанной в задании
+     * @returns {Object}
+     */
+    placeDevices() {
+        this.devices = this.devices.sort(sortDevices.byPriority); // Сортировка устройств по приоритету
+        let devices = this.devices.slice(0); // Копируем себе устройства, так как возможно их порядок придется изменить и мы не хотим мутировать основной массив
+        this.deadlockCheck(); // Первая проверка на наличие тупиковых состояний, чтоб иметь дополнительный фоллбэк в lastSafeBuild
+        
+        let i = 0;
+        let triedToStartFromEveryDevice = false;
+        let triedPowerBias = false;
+        // итерируем через все устройства
+        while(this.notPlacedDevices.length) {
+            const device = devices[i];
+            // пробуем разместить устройство
+            let success = this.tryToPlaceDevice(device); 
+            // если получилось, то продолжаем дальше итерировать через устройства
+            if (success) {
+                // мы могли начать размещать не с первого (будет ниже), поэтому i будет циклическим
+                i = i + 1 == devices.length ? 
+                0 : 
+                i + 1 ;
+                continue; 
+            }
+            // если не получилось разместить устройство, то проверяем получалось ли разместить что-то на прошлой итерации
+            if (this.lastSafeBuild !== null) { 
+                // если получалось, то рендерим данные из последнего успешного инстанса VirtualScheduleBuilder и завершаемся
+                return this.lastSafeBuild.renderResults();
+            }
+            // если не было размещения на прошлой итерации, то проверяем пробовали ли мы отсортировать устройства альтернативным способом
+            if (!triedPowerBias) {
+                // если нет, то сортируем наши устройства альтернативным способом и начинаем с первого устройства
+                // (добавление этого условия помогло избавиться от сильных проседаний производительности на определенных выборках)
+                devices = devices.sort(sortDevices.byPriorityPowerBias);
+                i = 0;
+                triedPowerBias = true;
+                continue;
+            }
+            // если мы уже пробовали альтернативную сортировку, то просто пробуем начать с каждого устройства
+            if (!triedToStartFromEveryDevice) {
+                i = i + 1 == devices.length ?
+                ~(triedToStartFromEveryDevice = true) && 0 :
+                i + 1 ;
+                continue;
+            }
+            // если мы пробовали начать с каждого устройства и это не дало результатов, значит скорее всего устройства нельзя разместить, выбрасываем ошибку
+            throw Error('Impossible to place all devices.');
+        }
+        // если ошибок не было и мы успешно прошли до конца цикла, значит выводим результаты
+        return this.renderResults();
+    }
+```
