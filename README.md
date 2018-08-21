@@ -521,4 +521,5 @@ deadlockCheck(device, hourNumber) {
     return isSafe;
 }
 ```
+#### <a name='virtualschedulebuilder'></a>VirtualScheduleBuilder `./virtual-schedule-builder.js`
 
