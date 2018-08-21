@@ -243,7 +243,7 @@ describe('monkey testing', () => {
 [Hour](#hour)  
 [DayModel](#daymodel)  
 [ScheduleModel](#schedulemodel)  
-#### Device `./models/device-model.js`
+#### <a name='device'></a>Device `./models/device-model.js`
 Класс устройства, содержит атрибуты и методы для манипулирования устройствами в расписании.
 ##### Конструктор
 ```javascript
@@ -273,7 +273,7 @@ new Device(deviceData, environment);
 ##### `.setHoursPriorityNoRates()`
 То же самое, что setHoursPriority, только вместо учитывания тарифов и сортировки часов по более выгодным, учитывает где устройство займет наибольшую долю от оставшейся энергии и в соответствии с этим сортирует. Сохраняет в атрибуте .bestHoursNoRates.
 
-#### Hour `./models/hour-model.js`  
+#### <a name='hour'></a>Hour `./models/hour-model.js`  
 Модель часа, содержит атрибуты и методы для манипулирования часами в расписании. Для составления расписания требуется 24 инстанса класса Hour.
 ##### Конструктор
 ```javascript
@@ -292,7 +292,7 @@ new Hour(number, mode, environment);
 ##### `getCombinedPower(duration)`
 Возвращает суммарную оставшуюся энергию начиная с этого часа и на протяжении duration.
 
-#### DayModel `./models/day-model.js`
+#### <a name='daymodel'></a>DayModel `./models/day-model.js`
 Моделирует суточный цикл. Содержит в себе 24 инстанса класса Hour и методы для итерации через них.  
 Основная задача -- предоставить возможность непрерывно итерировать через часы, то есть, если мы хотим проитерировать от 22 часа до 1, у нас должна быть такая возможность, иначе не получится размещать устройства на стыке суток.
 ##### Конструктор
@@ -320,7 +320,7 @@ new DayModel(dayStart, nightStart)
 dayModelInstance.iterateHours({ from: 23, to: 3 }, h => console.log(h.number)) // -> 23, 0, 1, 2, 3
 dayModelInstance.iterateHours({ from: 23, times: 3 }, h => console.log(h.number)) // -> 23, 0, 1
 ```
-#### ScheduleModel `./models/schedule-model.js`
+#### <a name='schedulemodel'></a>ScheduleModel `./models/schedule-model.js`
 Наследуется от класса DayModel и содержит вспомогательную логику для манипулирования расписанием.
 ##### Конструктор
 ```
